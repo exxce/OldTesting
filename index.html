@@ -2,33 +2,138 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>ChatGPT Checkout Link (India)</title>
+<title>ChatGPT Checkout Link (Старый Stripe)</title>
 <style>
-body{font-family:system-ui,sans-serif;max-width:720px;margin:40px auto;padding:0 20px;line-height:1.6;color:#222;background:#fafafa}
-h1{font-size:22px}
-h2{font-size:18px;margin-top:28px}
-.btn{display:inline-block;background:#10a37f;color:#fff;padding:12px 20px;border-radius:8px;text-decoration:none;font-weight:600;margin:12px 0}
-.btn:hover{background:#0d8a6a}
-ol{padding-left:20px}
-code{background:#f3f3f3;padding:2px 6px;border-radius:4px;font-size:13px}
-.note{background:#fff8e1;border-left:4px solid #ffb300;padding:10px 14px;border-radius:4px;margin:16px 0}
-.lang-switch{position:absolute;top:20px;right:20px;display:flex;gap:6px}
-.lang-switch button{background:#eee;border:1px solid #ccc;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600;color:#333}
-.lang-switch button.active{background:#10a37f;color:#fff;border-color:#10a37f}
-.lang-switch button:hover:not(.active){background:#ddd}
+:root {
+  --bg: #fafafa;
+  --text: #222;
+  --muted: #555;
+  --card-bg: #fff;
+  --border: #e0e0e0;
+  --code-bg: #f3f3f3;
+  --note-bg: #fff8e1;
+  --note-border: #ffb300;
+  --note-text: #333;
+  --warning-bg: #ffebee;
+  --warning-border: #e53935;
+  --warning-text: #b71c1c;
+  --btn-bg: #eee;
+  --btn-border: #ccc;
+  --btn-text: #333;
+  --btn-hover: #ddd;
+  --accent: #10a37f;
+  --accent-hover: #0d8a6a;
+  --link: #1976d2;
+}
+html.dark {
+  --bg: #1a1a1a;
+  --text: #e8e8e8;
+  --muted: #aaa;
+  --card-bg: #242424;
+  --border: #3a3a3a;
+  --code-bg: #2d2d2d;
+  --note-bg: #3a2f0a;
+  --note-border: #ffb300;
+  --note-text: #f0d68a;
+  --warning-bg: #3a1818;
+  --warning-border: #e53935;
+  --warning-text: #ff8a80;
+  --btn-bg: #333;
+  --btn-border: #555;
+  --btn-text: #ddd;
+  --btn-hover: #444;
+  --accent: #10a37f;
+  --accent-hover: #14c193;
+  --link: #64b5f6;
+}
+* { box-sizing: border-box; }
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 70px 20px 40px;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--bg);
+  transition: background 0.2s, color 0.2s;
+}
+h1 { font-size: 22px; }
+h2 { font-size: 18px; margin-top: 28px; }
+a { color: var(--link); }
+.btn {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  margin: 12px 0;
+}
+.btn:hover { background: var(--accent-hover); }
+ol { padding-left: 20px; }
+code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+}
+.note {
+  background: var(--note-bg);
+  border-left: 4px solid var(--note-border);
+  color: var(--note-text);
+  padding: 10px 14px;
+  border-radius: 4px;
+  margin: 16px 0;
+}
+.warning {
+  background: var(--warning-bg);
+  border-left: 4px solid var(--warning-border);
+  color: var(--warning-text);
+  padding: 10px 14px;
+  border-radius: 4px;
+  margin: 16px 0;
+  font-weight: 600;
+}
+.controls {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  gap: 6px;
+  z-index: 100;
+}
+.controls button {
+  background: var(--btn-bg);
+  border: 1px solid var(--btn-border);
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--btn-text);
+  transition: background 0.15s;
+}
+.controls button.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.controls button:hover:not(.active) { background: var(--btn-hover); }
 </style>
 </head>
 <body>
 
-<div class="lang-switch">
+<div class="controls">
   <button id="btn-ru" class="active" onclick="setLang('ru')">RU</button>
   <button id="btn-en" onclick="setLang('en')">EN</button>
+  <button id="btn-theme" onclick="toggleTheme()" title="Toggle theme">🌙</button>
 </div>
 
-<h1 data-i18n="title">Генератор ссылок на оплату ChatGPT (Индия)</h1>
+<h1 data-i18n="title">Генератор ссылок на оплату ChatGPT (Старый Stripe)</h1>
 <p data-i18n="intro">Перетащите кнопку ниже на панель закладок:</p>
 
-<a class="btn" id="bookmarklet" href="javascript:(async()=>{try{const s=await fetch('/api/auth/session',{credentials:'include'});const j=await s.json();if(!j?.accessToken){alert('Please sign in to chatgpt.com and try again');return}const choice=prompt('Choose plan (India / INR):\n1 = Plus\n2 = Go','1');const plans={'1':{plan_name:'chatgptplusplan'},'2':{plan_name:'chatgptgoplan'}};const cfg=plans[choice];if(!cfg){alert('Invalid choice');return}const a=Object.assign({billing_details:{country:'IN',currency:'INR'},promo_code:null,checkout_ui_mode:'redirect',entry_point:'all_plans_pricing_modal'},cfg);const r=await fetch('https://chatgpt.com/backend-api/payments/checkout',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json','authorization':`Bearer ${j.accessToken}`},body:JSON.stringify(a)});const d=await r.json();if(!d?.url){alert('Could not get checkout link. Response: '+JSON.stringify(d));return}prompt('Copy the checkout link:',d.url);}catch(e){alert('Error: '+(e&&e.message?e.message:e))}})();" data-i18n="button">📌 ChatGPT IN Checkout</a>
+<a class="btn" id="bookmarklet" href="javascript:(async()=>{try{const s=await fetch('/api/auth/session',{credentials:'include'});const j=await s.json();if(!j?.accessToken){alert('Please sign in to chatgpt.com and try again');return}const choice=prompt('Choose plan (India / INR):\n1 = Plus\n2 = Go','1');const plans={'1':{plan_name:'chatgptplusplan'},'2':{plan_name:'chatgptgoplan'}};const cfg=plans[choice];if(!cfg){alert('Invalid choice');return}const a=Object.assign({billing_details:{country:'IN',currency:'INR'},promo_code:null,checkout_ui_mode:'redirect',entry_point:'all_plans_pricing_modal'},cfg);const r=await fetch('https://chatgpt.com/backend-api/payments/checkout',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json','authorization':`Bearer ${j.accessToken}`},body:JSON.stringify(a)});const d=await r.json();if(!d?.url){alert('Could not get checkout link. Response: '+JSON.stringify(d));return}prompt('Copy the checkout link:',d.url);}catch(e){alert('Error: '+(e&&e.message?e.message:e))}})();" data-i18n="button">📌 ChatGPT Payment</a>
 
 <h2 data-i18n="how">Как пользоваться</h2>
 <ol>
@@ -36,40 +141,44 @@ code{background:#f3f3f3;padding:2px 6px;border-radius:4px;font-size:13px}
 <li data-i18n="step2">Откройте <a href="https://chatgpt.com" target="_blank">chatgpt.com</a> и войдите в нужный аккаунт</li>
 <li data-i18n="step3">Кликните по закладке, находясь на chatgpt.com</li>
 <li data-i18n="step4">В появившемся окне выберите тариф (1 = Plus, 2 = Go)</li>
-<li data-i18n="step5">Скопируйте ссылку оплаты из следующего окна</li>
+<li data-i18n="step5">Скопируйте ссылку оплаты из следующего окна и пришлите мне</li>
 </ol>
 
+<div class="warning" data-i18n="warning">⚠️ Не переходите по скопированной ссылке — это может сломать оплату.</div>
+
 <div class="note">
-<b data-i18n="noteLabel">Примечание:</b> <span data-i18n="noteText">тарифы Pro x5 и Pro x20 не поддерживаются — OpenAI использует встроенный Stripe Checkout для этих тарифов, и внешнюю ссылку получить невозможно.</span>
+<b data-i18n="noteLabel">Примечание:</b> <span data-i18n="noteText">тарифы Pro x5 и Pro x20 не поддерживаются у меня — OpenAI использует встроенный Stripe Checkout для этих тарифов, и внешнюю ссылку получить невозможно.</span>
 </div>
 
 <script>
 const translations = {
   ru: {
-    title: "Генератор ссылок на оплату ChatGPT (Индия)",
+    title: "Генератор ссылок на оплату ChatGPT (Старый Stripe)",
     intro: "Перетащите кнопку ниже на панель закладок:",
-    button: "📌 ChatGPT IN Checkout",
+    button: "📌 ChatGPT Payment",
     how: "Как пользоваться",
     step1: "Перетащите зелёную кнопку выше на панель закладок браузера",
     step2: 'Откройте <a href="https://chatgpt.com" target="_blank">chatgpt.com</a> и войдите в нужный аккаунт',
     step3: "Кликните по закладке, находясь на chatgpt.com",
     step4: "В появившемся окне выберите тариф (1 = Plus, 2 = Go)",
-    step5: "Скопируйте ссылку оплаты из следующего окна",
+    step5: "Скопируйте ссылку оплаты из следующего окна и пришлите мне",
+    warning: "⚠️ Не переходите по скопированной ссылке — это может сломать оплату.",
     noteLabel: "Примечание:",
-    noteText: "тарифы Pro x5 и Pro x20 не поддерживаются — OpenAI использует встроенный Stripe Checkout для этих тарифов, и внешнюю ссылку получить невозможно."
+    noteText: "тарифы Pro x5 и Pro x20 не поддерживаются у меня — OpenAI использует встроенный Stripe Checkout для этих тарифов, и внешнюю ссылку получить невозможно."
   },
   en: {
-    title: "ChatGPT Checkout Link Generator (India)",
+    title: "ChatGPT Checkout Link Generator (Legacy Stripe)",
     intro: "Drag the button below to your bookmarks bar:",
-    button: "📌 ChatGPT IN Checkout",
+    button: "📌 ChatGPT Payment",
     how: "How to use",
     step1: "Drag the green button above to your bookmarks bar",
     step2: 'Open <a href="https://chatgpt.com" target="_blank">chatgpt.com</a> and sign in with the target account',
     step3: "Click the bookmark while on chatgpt.com",
     step4: "Choose the plan in the popup (1 = Plus, 2 = Go)",
-    step5: "Copy the generated checkout link from the next popup",
+    step5: "Copy the checkout link from the next popup and send it to me",
+    warning: "⚠️ Do NOT open the copied link yourself — it may break the payment.",
     noteLabel: "Note:",
-    noteText: "Pro x5 and Pro x20 are not supported — OpenAI uses an embedded Stripe Checkout for those plans, and a shareable link cannot be generated."
+    noteText: "Pro x5 and Pro x20 are not supported here — OpenAI uses an embedded Stripe Checkout for those plans, and a shareable link cannot be generated."
   }
 };
 
@@ -85,10 +194,31 @@ function setLang(lang) {
   try { localStorage.setItem('lang', lang); } catch(e) {}
 }
 
-try {
-  const saved = localStorage.getItem('lang');
-  if (saved === 'en') setLang('en');
-} catch(e) {}
+function applyTheme(theme) {
+  document.documentElement.classList.toggle('dark', theme === 'dark');
+  document.getElementById('btn-theme').textContent = theme === 'dark' ? '☀️' : '🌙';
+  try { localStorage.setItem('theme', theme); } catch(e) {}
+}
+
+function toggleTheme() {
+  const isDark = document.documentElement.classList.contains('dark');
+  applyTheme(isDark ? 'light' : 'dark');
+}
+
+(function init() {
+  try {
+    const savedLang = localStorage.getItem('lang');
+    if (savedLang === 'en') setLang('en');
+  } catch(e) {}
+  try {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      applyTheme(savedTheme);
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      applyTheme('dark');
+    }
+  } catch(e) {}
+})();
 </script>
 
 </body>
