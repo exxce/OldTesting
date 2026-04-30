@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
 <meta charset="UTF-8">
 <title>ChatGPT Checkout Link (India)</title>
@@ -12,25 +12,84 @@ h2{font-size:18px;margin-top:28px}
 ol{padding-left:20px}
 code{background:#f3f3f3;padding:2px 6px;border-radius:4px;font-size:13px}
 .note{background:#fff8e1;border-left:4px solid #ffb300;padding:10px 14px;border-radius:4px;margin:16px 0}
+.lang-switch{position:absolute;top:20px;right:20px;display:flex;gap:6px}
+.lang-switch button{background:#eee;border:1px solid #ccc;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600;color:#333}
+.lang-switch button.active{background:#10a37f;color:#fff;border-color:#10a37f}
+.lang-switch button:hover:not(.active){background:#ddd}
 </style>
 </head>
 <body>
-<h1>ChatGPT Checkout Link Generator (India)</h1>
-<p>Drag the button below to your bookmarks bar:</p>
 
-<a class="btn" href="javascript:(async()=>{try{const s=await fetch('/api/auth/session',{credentials:'include'});const j=await s.json();if(!j?.accessToken){alert('Please sign in to chatgpt.com and try again');return}const choice=prompt('Choose plan (India / INR):\n1 = Plus\n2 = Go','1');const plans={'1':{plan_name:'chatgptplusplan'},'2':{plan_name:'chatgptgoplan'}};const cfg=plans[choice];if(!cfg){alert('Invalid choice');return}const a=Object.assign({billing_details:{country:'IN',currency:'INR'},promo_code:null,checkout_ui_mode:'redirect',entry_point:'all_plans_pricing_modal'},cfg);const r=await fetch('https://chatgpt.com/backend-api/payments/checkout',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json','authorization':`Bearer ${j.accessToken}`},body:JSON.stringify(a)});const d=await r.json();if(!d?.url){alert('Could not get checkout link. Response: '+JSON.stringify(d));return}prompt('Copy the checkout link:',d.url);}catch(e){alert('Error: '+(e&&e.message?e.message:e))}})();">📌 ChatGPT IN Checkout</a>
+<div class="lang-switch">
+  <button id="btn-ru" class="active" onclick="setLang('ru')">RU</button>
+  <button id="btn-en" onclick="setLang('en')">EN</button>
+</div>
 
-<h2>How to use</h2>
+<h1 data-i18n="title">Генератор ссылок на оплату ChatGPT (Индия)</h1>
+<p data-i18n="intro">Перетащите кнопку ниже на панель закладок:</p>
+
+<a class="btn" id="bookmarklet" href="javascript:(async()=>{try{const s=await fetch('/api/auth/session',{credentials:'include'});const j=await s.json();if(!j?.accessToken){alert('Please sign in to chatgpt.com and try again');return}const choice=prompt('Choose plan (India / INR):\n1 = Plus\n2 = Go','1');const plans={'1':{plan_name:'chatgptplusplan'},'2':{plan_name:'chatgptgoplan'}};const cfg=plans[choice];if(!cfg){alert('Invalid choice');return}const a=Object.assign({billing_details:{country:'IN',currency:'INR'},promo_code:null,checkout_ui_mode:'redirect',entry_point:'all_plans_pricing_modal'},cfg);const r=await fetch('https://chatgpt.com/backend-api/payments/checkout',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json','authorization':`Bearer ${j.accessToken}`},body:JSON.stringify(a)});const d=await r.json();if(!d?.url){alert('Could not get checkout link. Response: '+JSON.stringify(d));return}prompt('Copy the checkout link:',d.url);}catch(e){alert('Error: '+(e&&e.message?e.message:e))}})();" data-i18n="button">📌 ChatGPT IN Checkout</a>
+
+<h2 data-i18n="how">Как пользоваться</h2>
 <ol>
-<li>Drag the green button above to your bookmarks bar</li>
-<li>Open <a href="https://chatgpt.com" target="_blank">chatgpt.com</a> and sign in with the target account</li>
-<li>Click the bookmark while on chatgpt.com</li>
-<li>Choose the plan in the popup (1 = Plus, 2 = Go)</li>
-<li>Copy the generated checkout link from the next popup</li>
+<li data-i18n="step1">Перетащите зелёную кнопку выше на панель закладок браузера</li>
+<li data-i18n="step2">Откройте <a href="https://chatgpt.com" target="_blank">chatgpt.com</a> и войдите в нужный аккаунт</li>
+<li data-i18n="step3">Кликните по закладке, находясь на chatgpt.com</li>
+<li data-i18n="step4">В появившемся окне выберите тариф (1 = Plus, 2 = Go)</li>
+<li data-i18n="step5">Скопируйте ссылку оплаты из следующего окна</li>
 </ol>
 
 <div class="note">
-<b>Note:</b> Pro x5 and Pro x20 are not supported — OpenAI uses an embedded Stripe Checkout for those plans, and a shareable link cannot be generated.
+<b data-i18n="noteLabel">Примечание:</b> <span data-i18n="noteText">тарифы Pro x5 и Pro x20 не поддерживаются — OpenAI использует встроенный Stripe Checkout для этих тарифов, и внешнюю ссылку получить невозможно.</span>
 </div>
+
+<script>
+const translations = {
+  ru: {
+    title: "Генератор ссылок на оплату ChatGPT (Индия)",
+    intro: "Перетащите кнопку ниже на панель закладок:",
+    button: "📌 ChatGPT IN Checkout",
+    how: "Как пользоваться",
+    step1: "Перетащите зелёную кнопку выше на панель закладок браузера",
+    step2: 'Откройте <a href="https://chatgpt.com" target="_blank">chatgpt.com</a> и войдите в нужный аккаунт',
+    step3: "Кликните по закладке, находясь на chatgpt.com",
+    step4: "В появившемся окне выберите тариф (1 = Plus, 2 = Go)",
+    step5: "Скопируйте ссылку оплаты из следующего окна",
+    noteLabel: "Примечание:",
+    noteText: "тарифы Pro x5 и Pro x20 не поддерживаются — OpenAI использует встроенный Stripe Checkout для этих тарифов, и внешнюю ссылку получить невозможно."
+  },
+  en: {
+    title: "ChatGPT Checkout Link Generator (India)",
+    intro: "Drag the button below to your bookmarks bar:",
+    button: "📌 ChatGPT IN Checkout",
+    how: "How to use",
+    step1: "Drag the green button above to your bookmarks bar",
+    step2: 'Open <a href="https://chatgpt.com" target="_blank">chatgpt.com</a> and sign in with the target account',
+    step3: "Click the bookmark while on chatgpt.com",
+    step4: "Choose the plan in the popup (1 = Plus, 2 = Go)",
+    step5: "Copy the generated checkout link from the next popup",
+    noteLabel: "Note:",
+    noteText: "Pro x5 and Pro x20 are not supported — OpenAI uses an embedded Stripe Checkout for those plans, and a shareable link cannot be generated."
+  }
+};
+
+function setLang(lang) {
+  const t = translations[lang];
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key]) el.innerHTML = t[key];
+  });
+  document.getElementById('btn-ru').classList.toggle('active', lang === 'ru');
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  try { localStorage.setItem('lang', lang); } catch(e) {}
+}
+
+try {
+  const saved = localStorage.getItem('lang');
+  if (saved === 'en') setLang('en');
+} catch(e) {}
+</script>
+
 </body>
 </html>
